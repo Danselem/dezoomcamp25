@@ -14,20 +14,6 @@ To install `Docker` on Ubuntu, forllow the instructions on the [Docker installat
 ## Installing Terraform
 To install `terraform`, follow the installtion instructions at [Terraform website](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli).
 
-## How to spin a docker compose file
-If you have a `docker-compose.yaml` and want to quickly spin up a docker compose container, then run the command n detach mode:
-```bash
-    docker compose up -d
-```
-Also, to shut down the container, run:
-```bash
-    docker compose down
-```
-
-To view a running container:
-```bash
-    docker ps
-```
 
 ## How to use git and Github in a VM
 If you want to use git in a VM to handle your Github project, then you need to do the following.
@@ -85,3 +71,55 @@ Now authenticate:
 ```bash
 gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
 ```
+
+## How to spin a docker compose file
+If you have a `docker-compose.yaml` and want to quickly spin up a docker compose container, then run the command n detach mode:
+```bash
+    docker compose up -d
+```
+Also, to shut down the container, run:
+```bash
+    docker compose down
+```
+
+To view a running container:
+```bash
+    docker ps
+```
+
+### Docker compose env
+```bash
+    cp example.env .env
+```
+
+### To start a Dockerfile
+```bash
+    docker build -t taxi_ingest:v001 .
+```
+
+
+### To check docker network
+```bash
+    docker network ls
+```
+
+## Running executable script
+```bash
+    chmod +x run_ingest.sh
+
+    ./run_ingest.sh
+```
+
+### Exploring PGAdmin
+To view the pg database, first, export the PG Admin port through VS with port no `8080`.
+Thereafter, open `localhost:8080` on your browser and enter your PGAdmin username and password.
+After that, click `Servers` to open up a window to connect to postgres.
+
+In the General tab, fill in `localhost` for `Name`.
+
+In the Connection tab,
+Hostname/address: pgdatabase
+Port: 5432
+Maintenance database: ny_taxi
+Username: root
+Password: root

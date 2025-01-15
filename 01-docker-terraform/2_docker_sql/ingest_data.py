@@ -30,12 +30,18 @@ def main(params):
 
     engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db}')
 
-    df_iter = pd.read_csv(csv_name, iterator=True, chunksize=100000)
+    df_iter = pd.read_csv(csv_name, iterator=True, chunksize=100000, low_memory=False)
 
     df = next(df_iter)
 
-    df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
-    df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
+    if 'tpep_pickup_datetime' in df.columns:
+        df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
+        df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
+    elif 'lpep_pickup_datetime' in df.columns:
+        df.lpep_pickup_datetime = pd.to_datetime(df.lpep_pickup_datetime)
+        df.lpep_dropoff_datetime = pd.to_datetime(df.lpep_dropoff_datetime)
+    else:
+        print("No valid pickup/dropoff datetime columns found. Skipping this DataFrame.")
 
     df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace')
 
@@ -49,8 +55,15 @@ def main(params):
             
             df = next(df_iter)
 
-            df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
-            df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
+            if 'tpep_pickup_datetime' in df.columns:
+                df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
+                df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
+            elif 'lpep_pickup_datetime' in df.columns:
+                df.lpep_pickup_datetime = pd.to_datetime(df.lpep_pickup_datetime)
+                df.lpep_dropoff_datetime = pd.to_datetime(df.lpep_dropoff_datetime)
+            else:
+                print("No valid pickup/dropoff datetime columns found. Skipping this DataFrame.")
+                continue
 
             df.to_sql(name=table_name, con=engine, if_exists='append')
 
