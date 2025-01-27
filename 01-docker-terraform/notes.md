@@ -115,7 +115,7 @@ To view the pg database, first, export the PG Admin port through VS with port no
 Thereafter, open `localhost:8080` on your browser and enter your PGAdmin username and password.
 After that, click `Servers` to open up a window to connect to postgres.
 
-In the General tab, fill in `localhost` for `Name`.
+In the General tab, fill in `PostgreSQL 16` for `Name`.
 
 In the Connection tab,
 Hostname/address: pgdatabase
@@ -123,3 +123,21 @@ Port: 5432
 Maintenance database: ny_taxi
 Username: root
 Password: root
+
+
+## Delete Docker resources
+
+```bash
+    docker stop $(docker ps -aq)
+    docker rm $(docker ps -aq)
+    docker rmi -f $(docker images -aq)
+    docker volume rm $(docker volume ls -q)
+    docker network rm $(docker network ls -q)
+    docker compose down --volumes
+    docker system prune -a --volumes
+```
+
+### One line command
+```bash
+docker stop $(docker ps -aq) && docker rm $(docker ps -aq) && docker rmi -f $(docker images -aq) && docker volume rm $(docker volume ls -q) && docker network rm $(docker network ls -q) && docker system prune -a --volumes -f
+```
