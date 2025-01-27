@@ -43,6 +43,6 @@ resource "google_storage_bucket" "data-lake-bucket" {
 
 resource "google_bigquery_dataset" "dataset" {
   dataset_id = "dext"
-  project    = "scenic-dynamo-447811-m9"
+  project    = "scenic--447811-m9"
   location   = "US"
 }
