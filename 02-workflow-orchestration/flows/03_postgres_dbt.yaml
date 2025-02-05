@@ -28,6 +28,7 @@ tasks:
     containerImage: ghcr.io/kestra-io/dbt-postgres:latest
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
+      networkMode: host
     commands:
       - dbt deps
       - "{{ inputs.dbt_command }}"
@@ -39,7 +40,7 @@ tasks:
         outputs:
           dev:
             type: postgres
-            host: host.docker.internal
+            host:  10.128.0.2 # or first address after using the command `hostname -I` in place of `host.docker.internal`
             user: kestra
             password: k3str4
             port: 5432

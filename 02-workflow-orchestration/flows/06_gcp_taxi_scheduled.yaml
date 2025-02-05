@@ -242,6 +242,12 @@ triggers:
     inputs:
       taxi: green
 
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+    timezone: America/New_York
+
   - id: yellow_schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 10 1 * *"
