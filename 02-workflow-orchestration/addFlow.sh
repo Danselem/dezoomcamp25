@@ -7,3 +7,4 @@ curl -X POST http://localhost:8080/api/v1/flows/import -F fileUpload=@flows/05_g
 curl -X POST http://localhost:8080/api/v1/flows/import -F fileUpload=@flows/06_gcp_taxi.yaml
 curl -X POST http://localhost:8080/api/v1/flows/import -F fileUpload=@flows/06_gcp_taxi_scheduled.yaml
 curl -X POST http://localhost:8080/api/v1/flows/import -F fileUpload=@flows/07_gcp_dbt.yaml
+curl -X POST http://localhost:8080/api/v1/flows/import -F fileUpload=@flows/08_gcp_liquor.yaml
