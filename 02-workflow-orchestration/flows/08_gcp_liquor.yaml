@@ -25,7 +25,10 @@ inputs:
 variables:
   file: "{{inputs.liquor}}_sales_{{inputs.year}}-{{inputs.month}}.csv"
   gcs_bucket: "gs://{{kv('GCP_BUCKET_NAME')}}"
+  aws_bucket: "{{kv('AWS_BUCKET_NAME')}}"
+  aws_location: "{{kv('AWS_LOCATION')}}"
   gcs_file: "{{vars.gcs_bucket}}/{{vars.file}}"
+  aws_file: "iowa_sales/{{vars.file}}"
   table: "{{kv('GCP_DATASET')}}.{{inputs.liquor}}_sales_{{inputs.year}}_{{inputs.month}}"
   data: "{{outputs.extract.outputFiles[inputs.liquor ~ '_sales_' ~ inputs.year ~ '-' ~ inputs.month ~ '.csv']}}"
 
@@ -44,6 +47,7 @@ tasks:
   containerImage: ghcr.io/kestra-io/pydata:latest # Use Python container with pandas installed
   beforeCommands:
   - pip install pandas requests google-cloud-bigquery google-cloud-bigquery-storage db-dtypes
+  - pip install --upgrade google-cloud-storage
 
   script: |
     import os
@@ -53,12 +57,7 @@ tasks:
     import pandas as pd
     from google.oauth2 import service_account
 
-
-    # service_account_info = "{{ kv('GCP_CREDS') }}"
-    service_account_info = gcp_creds
-
-    # credentials = service_account.Credentials.from_service_account_json(service_account_info)
-    credentials = service_account.Credentials.from_service_account_info(service_account_info)
+    credentials = service_account.Credentials.from_service_account_info({{ kv('GCP_CREDS') }})
 
     project_id = "{{kv('GCP_PROJECT_ID')}}" # _set_env('PROJECT_ID')
 
@@ -93,10 +92,10 @@ tasks:
   type: io.kestra.plugin.aws.s3.Upload
   accessKeyId: "{{ kv('AWS_ACCESS_KEY_ID') }}"
   secretKeyId: "{{ kv('AWS_SECRET_ACCESS_KEY') }}"
-  region: "us-central-1"
+  region: "{{render(vars.aws_location)}}"
   from: "{{render(vars.data)}}"
-  bucket: "iowa-egbo"
-  key: "{{render(vars.data)}}"
+  bucket: "{{render(vars.aws_bucket)}}"
+  key: "{{render(vars.aws_file)}}"
 
 - id: purge_files
   type: io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles
