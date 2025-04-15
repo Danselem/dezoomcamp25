@@ -60,3 +60,27 @@ Test that writing works as well:
 ```python
 df.write.parquet('zones')
 ```
+
+## Starting jupyter lab
+```bash
+cd dezoomcamp25/05-batch/code
+chmod +x psparkenv.sh
+
+./psparkenv.sh
+```
+
+## Downloading Data
+```bash
+chmod +x download_data.sh
+
+./download_data.sh green 2020
+./download_data.sh green 2021
+
+./download_data.sh yellow 2020
+./download_data.sh yellow 2021
+```
+
+## Stopping Jupyter Lab
+```bash
+jupyter lab stop
+```

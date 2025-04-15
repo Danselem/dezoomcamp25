@@ -89,6 +89,9 @@ val distData = sc.parallelize(data)
 distData.filter(_ < 10).collect()
 ```
 
+### Quiting Spark
+To quit Scala, kindly use the command `:q` or `:quit`.
+
 ### PySpark
 
 It's the same for all platforms. Go to [pyspark.md](pyspark.md). 

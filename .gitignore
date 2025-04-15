@@ -210,3 +210,5 @@ override.tf.json
 terraform.rc
 
 05-batch/data
+
+05-batch/data/
